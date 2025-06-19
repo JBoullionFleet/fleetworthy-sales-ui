@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Your custom styles (like font-family and body flex) */
+body {
+    font-family: "Inter", sans-serif;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+}
+/* Style for the chat log area while loading */
+#chat-log-area.loading::before {
+    content: 'AI Agent is thinking...';
+    display: block;
+    text-align: center;
+    padding: 1rem;
+    color: #4a5568;
+}
+/* Basic chat message styling */
+.chat-message {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 80%; /* Limit chat bubble width */
+}
+.chat-message.user {
+    background-color: #e0f2fe; /* blue-100 */
+    color: #1e40af; /* blue-800 */
+    align-self: flex-end; /* Align to the right */
+    text-align: right;
+}
+.chat-message.ai {
+    background-color: #f3f4f6; /* gray-100 */
+    color: #374151; /* gray-800 */
+    align-self: flex-start; /* Align to the left */
+    text-align: left;
+}

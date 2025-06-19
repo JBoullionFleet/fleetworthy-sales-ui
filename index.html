@@ -11,92 +11,201 @@
         body {
             font-family: "Inter", sans-serif;
             min-height: 100vh; /* Ensure body takes full viewport height */
-            display: flex; /* Use flexbox for centering content */
-            align-items: center; /* Vertically center content */
-            justify-content: center; /* Horizontally center content */
             background-color: #f0f4f8; /* Light gray background */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack content vertically */
+            align-items: center; /* Center content horizontally */
+            padding: 1.5rem; /* Add some padding around the whole page */
         }
-        /* Style for the response area while loading */
-        #response-area.loading::before {
-            content: 'Generating personalized pitch...';
+        /* Styling for input fields and textareas */
+        .form-input {
+            @apply mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+        }
+        /* Styling for buttons */
+        .primary-button {
+            @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+        }
+        .ask-button {
+            @apply px-6 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75;
+        }
+        /* Style for the chat log area while loading */
+        #chat-log-area.loading::before {
+            content: 'AI Agent is thinking...';
             display: block;
             text-align: center;
             padding: 1rem;
             color: #4a5568; /* Darker gray text */
         }
+        /* Basic chat message styling */
+        .chat-message {
+            @apply p-2 rounded-lg my-2;
+        }
+        .chat-message.user {
+            @apply bg-blue-100 text-blue-800 self-end text-right; /* Align user messages to the right */
+        }
+        .chat-message.ai {
+            @apply bg-gray-100 text-gray-800 self-start text-left; /* Align AI messages to the left */
+        }
     </style>
 </head>
-<body class="p-4">
-    <div class="container mx-auto p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Fleetworthy AI Sales Agent</h1>
+<body>
+    <div class="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8">
+        <!-- Page Title and Description -->
+        <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">How can Fleetworthy Help your Business?</h1>
+        <p class="text-xl text-center text-gray-600 mb-8">Ask our AI Sales Agent!</p>
 
-        <!-- Input Form for Company Information -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Tell us about your company:</h2>
-            <form id="company-info-form" class="space-y-4">
+        <!-- Main Content Area: Two Columns (8/4 ratio) -->
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Left Column: AI Agent Application (8/12 = 2/3 width on md and larger screens) -->
+            <div class="w-full md:w-8/12 space-y-6">
+                <!-- Question Section -->
                 <div>
-                    <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name:</label>
-                    <input type="text" id="companyName" name="companyName" required
-                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <label for="questionInput" class="block text-sm font-medium text-gray-700 mb-1">Your Question:</label>
+                    <div class="flex gap-3">
+                        <input type="text" id="questionInput" name="questionInput" required placeholder="e.g., How can Fleetworthy help reduce my fuel costs?" class="form-input flex-grow">
+                        <button type="button" id="askButton" class="ask-button">Ask</button>
+                    </div>
                 </div>
-                <div>
-                    <label for="industry" class="block text-sm font-medium text-gray-700">Industry:</label>
-                    <input type="text" id="industry" name="industry" required
-                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="numTrucks" class="block text-sm font-medium text-gray-700">Number of Trucks in Fleet:</label>
-                    <input type="number" id="numTrucks" name="numTrucks" required
-                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="location" class="block text-sm font-medium text-gray-700">Primary Location (City, State/Province, Country):</label>
-                    <input type="text" id="location" name="location" required
-                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                </div>
-                <button type="submit"
-                        class="w-full flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Get Your Personalized Pitch
-                </button>
-            </form>
-        </div>
 
-        <!-- AI Agent Response Area -->
-        <div>
-            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Your Personalized Sales Pitch:</h2>
-            <div id="response-area" class="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner text-gray-800 whitespace-pre-wrap">
-                <!-- AI generated pitch will be displayed here -->
-                Enter your company information above to receive a personalized sales pitch from our AI agent.
+                <!-- Company Website URL Input -->
+                <div>
+                    <label for="companyWebsiteUrl" class="block text-sm font-medium text-gray-700 mb-1">Company Website URL:</label>
+                    <input type="url" id="companyWebsiteUrl" name="companyWebsiteUrl" placeholder="e.g., https://www.yourcompany.com" class="form-input">
+                </div>
+
+                <!-- About Company Text Area -->
+                <div>
+                    <label for="aboutCompany" class="block text-sm font-medium text-gray-700 mb-1">About Your Company (Operations, Challenges, Goals):</label>
+                    <textarea id="aboutCompany" name="aboutCompany" rows="6" placeholder="Provide details about your trucking operations, current challenges, and what you hope to achieve with new software." class="form-input resize-y"></textarea>
+                </div>
+
+                <!-- File Upload Section -->
+                <div>
+                    <label for="companyFile" class="block text-sm font-medium text-gray-700 mb-1">Upload Company Document (PDF, TXT, etc.):</label>
+                    <input type="file" id="companyFile" name="companyFile" accept=".pdf,.txt,.doc,.docx"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    <p class="mt-1 text-xs text-gray-500">Max file size: 5MB. Supported formats: PDF, TXT, DOC, DOCX.</p>
+                </div>
+
+                <!-- Chat Log Area -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Chat Log:</h3>
+                    <div id="chat-log-area" class="min-h-[300px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner overflow-y-auto flex flex-col items-start space-y-3">
+                        <!-- Chat messages will be appended here -->
+                        <div class="chat-message ai">Welcome! I'm your Fleetworthy AI Sales Agent. How can I help you today?</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Contact Information & Form (4/12 = 1/3 width on md and larger screens) -->
+            <div class="w-full md:w-4/12 space-y-6 bg-indigo-50 p-6 rounded-lg shadow-md">
+                <!-- Fleetworthy Contact Info -->
+                <div>
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-4">Fleetworthy Contact Info</h3>
+                    <p class="text-gray-700 mb-2"><strong>Phone:</strong> 1-800-555-FLYT (3598)</p>
+                    <p class="text-gray-700 mb-2"><strong>Email:</strong> sales@fleetworthy.com</p>
+                    <p class="text-gray-700 mb-2"><strong>Address:</strong> 123 Fleet St, Anytown, USA</p>
+                    <p class="text-gray-700">Feel free to reach out directly for more information!</p>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-4">Request a Demo:</h3>
+                    <form id="contact-form" class="space-y-4">
+                        <div>
+                            <label for="contactName" class="block text-sm font-medium text-gray-700">Your Name:</label>
+                            <input type="text" id="contactName" name="contactName" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="contactEmail" class="block text-sm font-medium text-gray-700">Your Email:</label>
+                            <input type="email" id="contactEmail" name="contactEmail" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="contactCompany" class="block text-sm font-medium text-gray-700">Your Company:</label>
+                            <input type="text" id="contactCompany" name="contactCompany" class="form-input">
+                        </div>
+                        <div>
+                            <label for="contactMessage" class="block text-sm font-medium text-gray-700">Message (optional):</label>
+                            <textarea id="contactMessage" name="contactMessage" rows="3" class="form-input resize-y"></textarea>
+                        </div>
+                        <button type="submit" class="primary-button bg-indigo-700 hover:bg-indigo-800">
+                            Submit Demo Request
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('company-info-form').addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
+        // --- Utility function to add messages to the chat log ---
+        function addMessageToChatLog(message, sender) {
+            const chatLogArea = document.getElementById('chat-log-area');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', sender);
+            messageDiv.textContent = message;
+            chatLogArea.appendChild(messageDiv);
+            // Scroll to the bottom of the chat log
+            chatLogArea.scrollTop = chatLogArea.scrollHeight;
+        }
 
-            const companyName = document.getElementById('companyName').value;
-            const industry = document.getElementById('industry').value;
-            const numTrucks = document.getElementById('numTrucks').value;
-            const location = document.getElementById('location').value;
+        // --- Event Listener for the "Ask" button ---
+        document.getElementById('askButton').addEventListener('click', async () => {
+            const questionInput = document.getElementById('questionInput');
+            const companyWebsiteUrl = document.getElementById('companyWebsiteUrl');
+            const aboutCompany = document.getElementById('aboutCompany');
+            const companyFile = document.getElementById('companyFile');
+            const chatLogArea = document.getElementById('chat-log-area');
 
-            const responseArea = document.getElementById('response-area');
-            responseArea.textContent = ''; // Clear previous response
-            responseArea.classList.add('loading'); // Add loading class for spinner/text
+            const userQuestion = questionInput.value.trim();
+            const websiteUrl = companyWebsiteUrl.value.trim();
+            const companyDescription = aboutCompany.value.trim();
+            const file = companyFile.files[0];
+
+            if (!userQuestion) {
+                alert('Please enter a question to ask the AI Sales Agent.'); // Using alert for now, will replace with custom modal later.
+                return;
+            }
+
+            // Add user's question to chat log
+            addMessageToChatLog(userQuestion, 'user');
+
+            // Clear the question input after sending
+            questionInput.value = '';
+
+            // Show loading indicator
+            chatLogArea.classList.add('loading');
+            // We'll also clear the default "Welcome" message if it's still there
+            if (chatLogArea.firstElementChild && chatLogArea.firstElementChild.textContent.includes('Welcome!')) {
+                chatLogArea.innerHTML = '';
+            }
+
+
+            // Prepare data to send to backend
+            const payload = {
+                question: userQuestion,
+                company_website: websiteUrl,
+                company_description: companyDescription,
+                // We'll handle file upload more robustly in the next phase (e.g., base64 encoding or separate upload)
+                // For now, we'll just indicate if a file was selected.
+                file_attached: file ? true : false,
+                file_name: file ? file.name : null,
+                file_type: file ? file.type : null,
+                // file_data: file ? await readFileAsBase64(file) : null // Will implement readFileAsBase64 later
+            };
 
             try {
-                // Replace with your actual Render.com API URL
-                const backendApiUrl = 'https://fleetworthy-sales-api.onrender.com/hello'; // Using the /hello endpoint for testing
+                // IMPORTANT: Use your Render.com backend URL
+                // For now, we'll still hit the /hello endpoint for testing the new UI elements,
+                // but we will update the backend logic in the next phase.
+                const backendApiUrl = 'https://fleetworthy-sales-api.onrender.com/hello';
 
                 const response = await fetch(backendApiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        name: companyName // For this test, we're just sending the company name as 'name'
-                                          // In the next iteration, we'll send all relevant data.
-                    }),
+                    body: JSON.stringify({ name: payload.question }), // Still sending only 'name' for current /hello endpoint test
                 });
 
                 if (!response.ok) {
@@ -104,15 +213,33 @@
                 }
 
                 const data = await response.json();
-                responseArea.textContent = data.message || 'No message received.';
+                addMessageToChatLog(data.message || 'No response from AI agent.', 'ai');
 
             } catch (error) {
-                console.error('Error fetching data:', error);
-                responseArea.textContent = 'Error generating pitch. Please try again.';
+                console.error('Error communicating with AI agent:', error);
+                addMessageToChatLog('Oops! There was an error getting a response from the AI. Please try again.', 'ai');
             } finally {
-                responseArea.classList.remove('loading'); // Remove loading class
+                chatLogArea.classList.remove('loading');
             }
         });
+
+        // --- Event Listener for the Contact Form (placeholder for now) ---
+        document.getElementById('contact-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            // In a real application, you'd send this data to a separate backend service (e.g., for email notifications)
+            alert('Demo request submitted! Fleetworthy will be in touch shortly.'); // Placeholder
+            event.target.reset(); // Clear the form
+        });
+
+        // --- File reading utility (will be used when we handle file uploads properly) ---
+        // async function readFileAsBase64(file) {
+        //     return new Promise((resolve, reject) => {
+        //         const reader = new FileReader();
+        //         reader.onload = () => resolve(reader.result.split(',')[1]); // Get only the base64 part
+        //         reader.onerror = error => reject(error);
+        //         reader.readAsDataURL(file);
+        //     });
+        // }
     </script>
 </body>
 </html>
