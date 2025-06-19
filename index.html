@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleetworthy AI Sales Agent</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS to apply Inter font and ensure full page height */
+        body {
+            font-family: "Inter", sans-serif;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex; /* Use flexbox for centering content */
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+            background-color: #f0f4f8; /* Light gray background */
+        }
+        /* Style for the response area while loading */
+        #response-area.loading::before {
+            content: 'Generating personalized pitch...';
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            color: #4a5568; /* Darker gray text */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container mx-auto p-8 bg-white rounded-xl shadow-lg w-full max-w-2xl">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Fleetworthy AI Sales Agent</h1>
+
+        <!-- Input Form for Company Information -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Tell us about your company:</h2>
+            <form id="company-info-form" class="space-y-4">
+                <div>
+                    <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="industry" class="block text-sm font-medium text-gray-700">Industry:</label>
+                    <input type="text" id="industry" name="industry" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="numTrucks" class="block text-sm font-medium text-gray-700">Number of Trucks in Fleet:</label>
+                    <input type="number" id="numTrucks" name="numTrucks" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Primary Location (City, State/Province, Country):</label>
+                    <input type="text" id="location" name="location" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <button type="submit"
+                        class="w-full flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Get Your Personalized Pitch
+                </button>
+            </form>
+        </div>
+
+        <!-- AI Agent Response Area -->
+        <div>
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Your Personalized Sales Pitch:</h2>
+            <div id="response-area" class="min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner text-gray-800 whitespace-pre-wrap">
+                <!-- AI generated pitch will be displayed here -->
+                Enter your company information above to receive a personalized sales pitch from our AI agent.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('company-info-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const companyName = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const numTrucks = document.getElementById('numTrucks').value;
+            const location = document.getElementById('location').value;
+
+            const responseArea = document.getElementById('response-area');
+            responseArea.textContent = ''; // Clear previous response
+            responseArea.classList.add('loading'); // Add loading class for spinner/text
+
+            try {
+                // Replace with your actual Render.com API URL
+                const backendApiUrl = 'https://fleetworthy-sales-api.onrender.com/hello'; // Using the /hello endpoint for testing
+
+                const response = await fetch(backendApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: companyName // For this test, we're just sending the company name as 'name'
+                                          // In the next iteration, we'll send all relevant data.
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                responseArea.textContent = data.message || 'No message received.';
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                responseArea.textContent = 'Error generating pitch. Please try again.';
+            } finally {
+                responseArea.classList.remove('loading'); // Remove loading class
+            }
+        });
+    </script>
+</body>
+</html>
