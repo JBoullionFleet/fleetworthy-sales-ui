@@ -4,7 +4,7 @@ import React from 'react';
 function ContactInfo() {
     return (
         <div>
-            <h3 className="text-2xl font-bold text-indigo-800 mb-4">Fleetworthy Contact Info</h3>
+            <h3 className="text-2xl font-bold text-black mb-4">Fleetworthy Contact Info</h3>
             <p className="text-gray-700 mb-2"><strong>Phone:</strong> 1-800-555-FLYT (3598)</p>
             <p className="text-gray-700 mb-2"><strong>Email:</strong> sales@fleetworthy.com</p>
             <p className="text-gray-700 mb-2"><strong>Address:</strong> 123 Fleet St, Anytown, USA</p>

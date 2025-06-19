@@ -1,40 +1,82 @@
 @import "tailwindcss";
 
-/* Your custom styles (like font-family and body flex) */
+/* Configure DaisyUI to use dark theme as default */
+@plugin "daisyui" {
+  themes: dark --default, light;
+}
+
+/* Override specific colors in the dark theme to match Fleetworthy branding */
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: true;
+  /* Override primary color with Fleetworthy's signature pink */
+  --color-primary: #F34249;
+  --color-primary-content: #ffffff;
+  
+  /* Override secondary to complement the pink */
+  --color-secondary: #e5679a;
+  --color-secondary-content: #ffffff;
+  
+  /* Override accent for a lighter pink accent */
+  --color-accent: #F9CC3D;
+  --color-accent-content: #121518;
+  
+  /* Override background colors to use custom dark background */
+  --color-base-100: #121518;
+  --color-base-200: #1a1d21;
+  --color-base-300: #22252a;
+  --color-base-content: #e5e5e5;
+  
+  /* Override neutral colors to complement the new background */
+  --color-neutral: #1a1d21;
+  --color-neutral-content: #e5e5e5;
+}
+
+/* Your custom styles */
 body {
-    font-family: "Inter", sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
-    background-color: #f0f4f8;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1.5rem;
 }
+
 /* Style for the chat log area while loading */
 #chat-log-area.loading::before {
-    content: 'AI Agent is thinking...';
+    content: 'Fleetworthy AI is thinking...';
     display: block;
     text-align: center;
     padding: 1rem;
-    color: #4a5568;
+    color: #ffffff;
+    font-weight: 500;
 }
+
 /* Basic chat message styling */
 .chat-message {
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    max-width: 80%; /* Limit chat bubble width */
+    max-width: 80%;
 }
+
 .chat-message.user {
-    background-color: #e0f2fe; /* blue-100 */
-    color: #1e40af; /* blue-800 */
-    align-self: flex-end; /* Align to the right */
+    background-color: #F34249; /* Fleetworthy pink for user messages */
+    color: #ffffff;
+    align-self: flex-end;
     text-align: right;
 }
+
 .chat-message.ai {
-    background-color: #f3f4f6; /* gray-100 */
-    color: #374151; /* gray-800 */
-    align-self: flex-start; /* Align to the left */
+    background-color: #1a1d21; /* Slightly lighter than main background */
+    color: #e5e5e5;
+    align-self: flex-start;
     text-align: left;
+    border: 1px solid #22252a; /* Subtle border using base-300 color */
+}
+
+/* Enhanced button hover effect for the Fleetworthy pink primary buttons */
+.btn-primary:hover {
+    background-color: #F34249;
 }

@@ -45,8 +45,6 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
 
         try {
             // IMPORTANT: Use your Render.com backend URL
-            // For now, still hitting /hello endpoint with just 'name' for testing UI structure.
-            // We'll update backend logic to handle full payload in a later step.
             const backendApiUrl = 'https://fleetworthy-sales-api.onrender.com/hello';
 
             const response = await fetch(backendApiUrl, {
@@ -74,9 +72,61 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
 
     return (
         <div className="w-full md:w-8/12 space-y-6">
-            {/* Question Section */}
-            <div>
-                <label htmlFor="questionInput" className="block text-sm font-medium text-gray-700 mb-1">Your Question:</label>
+                       {/* Company Website URL Input */}
+            <div className="form-control">
+                <label htmlFor="companyWebsiteUrl" className="label text-base-content">
+                    <span className="label-text">Company Website URL:</span>
+                </label>
+                <input
+                    type="url"
+                    id="companyWebsiteUrl"
+                    name="companyWebsiteUrl"
+                    placeholder="e.g., https://www.yourcompany.com"
+                    className="input input-bordered w-full" // DaisyUI input class
+                    value={companyWebsite}
+                    onChange={(e) => setCompanyWebsite(e.target.value)}
+                />
+            </div>
+
+            {/* About Company Text Area */}
+            <div className="form-control">
+                <label htmlFor="aboutCompany" className="label text-base-content">
+                    <span className="label-text">About Your Company (Operations, Challenges, Goals):</span>
+                </label>
+                <textarea
+                    id="aboutCompany"
+                    name="aboutCompany"
+                    rows="6"
+                    placeholder="Provide details about your trucking operations, current challenges, and what you hope to achieve with new software."
+                    className="textarea textarea-bordered h-auto resize-y w-full" // DaisyUI textarea class
+                    value={aboutCompany}
+                    onChange={(e) => setAboutCompany(e.target.value)}
+                ></textarea>
+            </div>
+
+            {/* File Upload Section */}
+            <div className="form-control">
+                <label htmlFor="companyFile" className="label text-base-content">
+                    <span className="label-text">Upload Company Document (PDF, TXT, etc.):</span>
+                </label>
+                <input
+                    type="file"
+                    id="companyFile"
+                    name="companyFile"
+                    accept=".pdf,.txt,.doc,.docx"
+                    className="file-input file-input-bordered w-full" // DaisyUI file-input class
+                    onChange={(e) => setCompanyFile(e.target.files[0])}
+                />
+                <label className="label">
+                    <span className="label-text-alt">Max file size: 5MB. Supported formats: PDF, TXT, DOC, DOCX.</span>
+                </label>
+            </div>
+
+             {/* Question Section */}
+             <div className="form-control"> {/* DaisyUI form-control for input groups */}
+                <label htmlFor="questionInput" className="label text-base-content">
+                    <span className="label-text">Your Question:</span>
+                </label>
                 <div className="flex gap-3">
                     <input
                         type="text"
@@ -84,64 +134,34 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
                         name="questionInput"
                         required
                         placeholder="e.g., How can Fleetworthy help reduce my fuel costs?"
-                        className="form-input flex-grow"
+                        className="input input-bordered w-full flex-grow" // DaisyUI input class
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
                         onKeyPress={(e) => { if (e.key === 'Enter') handleAsk(); }}
                     />
-                    <button type="button" id="askButton" className="ask-button" onClick={handleAsk}>Ask</button>
+                    <button type="button" id="askButton" className="btn btn-primary" onClick={handleAsk}> {/* DaisyUI btn and btn-error */}
+                        Ask
+                    </button>
                 </div>
-            </div>
-
-            {/* Company Website URL Input */}
-            <div>
-                <label htmlFor="companyWebsiteUrl" className="block text-sm font-medium text-gray-700 mb-1">Company Website URL:</label>
-                <input
-                    type="url"
-                    id="companyWebsiteUrl"
-                    name="companyWebsiteUrl"
-                    placeholder="e.g., https://www.yourcompany.com"
-                    className="form-input"
-                    value={companyWebsite}
-                    onChange={(e) => setCompanyWebsite(e.target.value)}
-                />
-            </div>
-
-            {/* About Company Text Area */}
-            <div>
-                <label htmlFor="aboutCompany" className="block text-sm font-medium text-gray-700 mb-1">About Your Company (Operations, Challenges, Goals):</label>
-                <textarea
-                    id="aboutCompany"
-                    name="aboutCompany"
-                    rows="6"
-                    placeholder="Provide details about your trucking operations, current challenges, and what you hope to achieve with new software."
-                    className="form-input resize-y"
-                    value={aboutCompany}
-                    onChange={(e) => setAboutCompany(e.target.value)}
-                ></textarea>
-            </div>
-
-            {/* File Upload Section */}
-            <div>
-                <label htmlFor="companyFile" className="block text-sm font-medium text-gray-700 mb-1">Upload Company Document (PDF, TXT, etc.):</label>
-                <input
-                    type="file"
-                    id="companyFile"
-                    name="companyFile"
-                    accept=".pdf,.txt,.doc,.docx"
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                    onChange={(e) => setCompanyFile(e.target.files[0])}
-                />
-                <p className="mt-1 text-xs text-gray-500">Max file size: 5MB. Supported formats: PDF, TXT, DOC, DOCX.</p>
             </div>
 
             {/* Chat Log Area */}
             <div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">Chat Log:</h3>
-                <div ref={chatLogRef} id="chat-log-area" className={`min-h-[300px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner overflow-y-auto flex flex-col items-start space-y-3 ${isLoading ? 'loading' : ''}`}>
+                <h3 className="text-xl font-semibold text-base-content mb-2">Chat Log:</h3>
+                <div ref={chatLogRef} id="chat-log-area" className={`min-h-[300px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner overflow-y-auto flex flex-col space-y-3 ${isLoading ? 'loading' : ''}`}>
+                    {/* Display loading spinner/message when isLoading is true */}
+                    {isLoading && (
+                        <div className="flex justify-center items-center h-full">
+                            <span className="loading loading-spinner text-primary"></span> {/* DaisyUI loading spinner */}
+                            <p className="ml-2 text-gray-600">AI Agent is thinking...</p>
+                        </div>
+                    )}
                     {chatLog.map((msg, index) => (
-                        <div key={index} className={`chat-message ${msg.sender}`}>
-                            {msg.message}
+                        // DaisyUI chat-bubble for messages
+                        <div key={index} className={`chat ${msg.sender === 'user' ? 'chat-end' : 'chat-start'}`}>
+                            <div className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-info' : 'chat-bubble-neutral'}`}>
+                                {msg.message}
+                            </div>
                         </div>
                     ))}
                 </div>

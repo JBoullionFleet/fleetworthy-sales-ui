@@ -15,10 +15,10 @@ function App() {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8">
+        <div className="w-full max-w-6xl mx-auto bg-base-100 rounded-xl shadow-lg p-8">
             {/* Page Title and Description */}
-            <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-4">How can Fleetworthy Help your Business?</h1>
-            <p className="text-xl text-center text-gray-600 mb-8">Ask our AI Sales Agent!</p>
+            <h1 className="text-4xl font-extrabold text-center text-base-content mb-4">How can Fleetworthy Help your Business?</h1>
+            <p className="text-xl text-center text-base-content mb-8">Ask our AI Sales Agent!</p>
 
             {/* Main Content Area: Two Columns (8/4 ratio) */}
             <div className="flex flex-col md:flex-row gap-8">
@@ -31,7 +31,7 @@ function App() {
                 />
 
                 {/* Right Column: Contact Information & Form */}
-                <div className="w-full md:w-4/12 space-y-6 bg-indigo-50 p-6 rounded-lg shadow-md">
+                <div className="w-full md:w-4/12 space-y-6 bg-gray-50 p-6 rounded-lg shadow-md">
                     <ContactInfo />
                     <ContactForm />
                 </div>
