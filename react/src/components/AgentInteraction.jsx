@@ -142,6 +142,58 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
 
     return (
         <div className="w-full md:w-8/12 space-y-6">
+
+             {/* Chat Log Area */}
+             <div>
+                <h3 className="text-xl font-semibold text-base-content mb-2">Chat Log:</h3>
+                <div ref={chatLogRef} id="chat-log-area" className={`min-h-[300px] max-h-[500px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner overflow-y-auto flex flex-col space-y-3`}>
+                    {/* Display loading spinner/message when isLoading is true */}
+                    {isLoading && (
+                        <div className="flex justify-center items-center py-4">
+                            <span className="loading loading-spinner text-primary"></span>
+                            <p className="ml-2 text-gray-600">AI Agent is thinking...</p>
+                        </div>
+                    )}
+                    {chatLog.map((msg, index) => (
+                        <div key={index} className={`chat ${msg.sender === 'user' ? 'chat-end' : 'chat-start'}`}>
+                            <div className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-info' : 'chat-bubble-neutral'}`}>
+                                {msg.message}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Question Section */}
+            <div className="form-control">
+                <label htmlFor="questionInput" className="label text-base-content">
+                    <span className="label-text">Your Question:</span>
+                </label>
+                <div className="flex gap-3">
+                    <input
+                        type="text"
+                        id="questionInput"
+                        name="questionInput"
+                        required
+                        placeholder="e.g., How can Fleetworthy help reduce my fuel costs?"
+                        className="input input-bordered w-full flex-grow"
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        onKeyPress={(e) => { if (e.key === 'Enter' && !isLoading) handleAsk(); }}
+                        disabled={isLoading}
+                    />
+                    <button 
+                        type="button" 
+                        id="askButton" 
+                        className="btn btn-primary" 
+                        onClick={handleAsk}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Thinking...' : 'Ask'}
+                    </button>
+                </div>
+            </div>
+
             {/* Company Website URL Input */}
             <div className="form-control">
                 <label htmlFor="companyWebsiteUrl" className="label text-base-content">
@@ -197,57 +249,6 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
                         )}
                     </span>
                 </label>
-            </div>
-
-            {/* Question Section */}
-            <div className="form-control">
-                <label htmlFor="questionInput" className="label text-base-content">
-                    <span className="label-text">Your Question:</span>
-                </label>
-                <div className="flex gap-3">
-                    <input
-                        type="text"
-                        id="questionInput"
-                        name="questionInput"
-                        required
-                        placeholder="e.g., How can Fleetworthy help reduce my fuel costs?"
-                        className="input input-bordered w-full flex-grow"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        onKeyPress={(e) => { if (e.key === 'Enter' && !isLoading) handleAsk(); }}
-                        disabled={isLoading}
-                    />
-                    <button 
-                        type="button" 
-                        id="askButton" 
-                        className="btn btn-primary" 
-                        onClick={handleAsk}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Thinking...' : 'Ask'}
-                    </button>
-                </div>
-            </div>
-
-            {/* Chat Log Area */}
-            <div>
-                <h3 className="text-xl font-semibold text-base-content mb-2">Chat Log:</h3>
-                <div ref={chatLogRef} id="chat-log-area" className={`min-h-[300px] p-4 bg-gray-50 border border-gray-200 rounded-md shadow-inner overflow-y-auto flex flex-col space-y-3`}>
-                    {/* Display loading spinner/message when isLoading is true */}
-                    {isLoading && (
-                        <div className="flex justify-center items-center py-4">
-                            <span className="loading loading-spinner text-primary"></span>
-                            <p className="ml-2 text-gray-600">AI Agent is thinking...</p>
-                        </div>
-                    )}
-                    {chatLog.map((msg, index) => (
-                        <div key={index} className={`chat ${msg.sender === 'user' ? 'chat-end' : 'chat-start'}`}>
-                            <div className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-info' : 'chat-bubble-neutral'}`}>
-                                {msg.message}
-                            </div>
-                        </div>
-                    ))}
-                </div>
             </div>
         </div>
     );
