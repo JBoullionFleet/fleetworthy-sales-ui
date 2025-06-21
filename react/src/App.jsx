@@ -17,7 +17,7 @@ function App() {
     return (
         <div className="w-full max-w-6xl mx-auto bg-base-100 rounded-xl shadow-lg p-8">
             {/* Page Title and Description */}
-            <h1 className="text-4xl font-extrabold text-center text-base-content mb-4">How can Fleetworthy Help your Business?</h1>
+            <h1 className="text-4xl font-extrabold text-center text-base-content mb-4">How can Fleetworthy help your business?</h1>
             <p className="text-xl text-center text-base-content mb-8">Ask our AI Sales Agent!</p>
 
             {/* Main Content Area: Two Columns (8/4 ratio) */}

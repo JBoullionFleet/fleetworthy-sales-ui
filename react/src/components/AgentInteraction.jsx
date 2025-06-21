@@ -142,7 +142,6 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
 
     return (
         <div className="w-full md:w-8/12 space-y-6">
-
              {/* Chat Log Area */}
              <div>
                 <h3 className="text-xl font-semibold text-base-content mb-2">Chat Log:</h3>
@@ -151,12 +150,12 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
                     {isLoading && (
                         <div className="flex justify-center items-center py-4">
                             <span className="loading loading-spinner text-primary"></span>
-                            <p className="ml-2 text-gray-600">AI Agent is thinking...</p>
+                            <p className="ml-2 text-gray-600">AI Agent is researching...</p>
                         </div>
                     )}
                     {chatLog.map((msg, index) => (
                         <div key={index} className={`chat ${msg.sender === 'user' ? 'chat-end' : 'chat-start'}`}>
-                            <div className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-info' : 'chat-bubble-neutral'}`}>
+                            <div className={`chat-bubble ${msg.sender === 'user' ? 'chat-bubble-info' : 'chat-bubble-neutral'} whitespace-pre-wrap max-w-none`}>
                                 {msg.message}
                             </div>
                         </div>
@@ -249,7 +248,7 @@ function AgentInteraction({ chatLog, addMessageToChatLog, isLoading, setIsLoadin
                         )}
                     </span>
                 </label>
-            </div>
+            </div>           
         </div>
     );
 }
